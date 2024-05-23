@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fetch-script
+  namespace: ppprp1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fetch-script
+  template:
+    metadata:
+      labels:
+        app: fetch-script
+    spec:
+      containers:
+      - name: fetch-script
+        image: simon0018/fetch-script
+        resources:
+          limits:
+            cpu: "0.1"  # ограничение по использованию CPU
+            memory: "64Mi"  # ограничение по использованию памяти
+        env:
+        - name: FLASK_SERVICE_URL
+          value: "http://flask-service/statistics"

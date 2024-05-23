@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-app
+  namespace: ppprp1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask-app
+  template:
+    metadata:
+      labels:
+        app: flask-app
+    spec:
+      containers:
+      - name: flask-app
+        image: simon0018/flask-app
+        ports:
+        - containerPort: 5000
+        resources:
+          limits:
+            cpu: "0.5"  # ограничение по использованию CPU
+            memory: "256Mi"  # ограничение по использованию памяти
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flask-service
+  namespace: ppprp1
+spec:
+  selector:
+    app: flask-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
+  type: LoadBalancer
